@@ -1,98 +1,77 @@
-# E4-Lab-Host-a-Website-on-an-EC2-Server-Amazon-Linux-
-Objective  Launch an EC2 instance and host a static website using Apache HTTP Server.
+🚀 Host a Static Website on AWS EC2 using Apache
+📌 Project Overview
 
-Step 1: Launch EC2 Instance
+This project demonstrates how to deploy a static website on an EC2 instance using Apache Web Server.
+
+It includes:
+
+EC2 instance creation
+
+Security group configuration
+
+Apache installation
+
+Website deployment
+
+Public access via IP
+
+🛠 Technologies Used
+
+AWS EC2
+
+Amazon Linux 2
+
+Apache (httpd)
+
+SSH
+
+SCP
+
+📋 Prerequisites
+
+AWS account
+
+Key pair (.pem file)
+
+Security group rules:
+
+SSH (22) → My IP
+
+HTTP (80) → 0.0.0.0/0
+
+🧪 Step 1: Launch EC2 Instance
 
 Go to AWS Console → EC2 → Launch Instance
 
-Choose:
+Select Amazon Linux 2
 
-AMI: Amazon Linux 2
+Choose instance type: t2.micro
 
-Instance Type: t2.micro (Free tier)
+Attach security group allowing SSH and HTTP
 
-Create or select a key pair.
+Launch instance and copy Public IP
 
-Create or select a Security Group and add:
+🔐 Step 2: Connect to EC2
+ssh -i "mum-key.pem" ec2-user@<PUBLIC-IP>
 
-Type	Port	Source
-SSH	22	My IP
-HTTP	80	0.0.0.0/0
-
-⚠ HTTP rule is required to access the website in the browser.
-
-Launch the instance.
-
-Copy the Public IP address.
-
-Step 2: Connect to EC2 (SSH)
-
-From your local machine:
-
-ssh -i "C:\Users\almal\Downloads\mum-key.pem" ec2-user@52.66.253.200
-
-
-(Replace with your actual key path and public IP.)
-
-Step 3: Install and Start Apache
-
-Check if Apache is installed:
-
-sudo systemctl status httpd
-
-
-If not installed:
-
+🌐 Step 3: Install Apache
+sudo yum update -y
 sudo yum install httpd -y
-
-
-Start Apache:
-
 sudo systemctl start httpd
-
-
-Enable Apache to start on boot:
-
 sudo systemctl enable httpd
-
-
-Verify Apache is running:
-
 sudo systemctl status httpd
 
-Step 4: Upload Website Files to EC2
+📂 Step 4: Upload Website File
 
-Exit from EC2:
+From local machine:
 
-exit
+scp -i "mum-key.pem" website.zip ec2-user@<PUBLIC-IP>:/home/ec2-user/
 
-
-From your laptop, copy the zip file:
-
-scp -i "C:\Users\almal\Downloads\mum-key.pem" "C:\Users\almal\Downloads\yourfile.zip" ec2-user@52.66.253.200:/home/ec2-user/
-
-Step 5: Extract Website Files
-
-Reconnect to EC2:
-
-ssh -i "C:\Users\almal\Downloads\mum-key.pem" ec2-user@52.66.253.200
-
-
-Install unzip (if needed):
-
+📦 Step 5: Extract Website
 sudo yum install unzip -y
+unzip website.zip
 
-
-Unzip the file:
-
-unzip yourfile.zip
-
-
-Check extracted folder:
-
-ls
-
-Step 6: Move Files to Apache Web Directory
+📁 Step 6: Move Files to Web Root
 
 Apache serves files from:
 
@@ -103,48 +82,23 @@ Move website files:
 
 sudo cp -r folder-name/* /var/www/html/
 
-
-Verify:
-
-ls /var/www/html
-
-Step 7: Set Proper Permissions
-
-Instead of using 777 (not recommended), use:
-
+🔒 Step 7: Set Permissions
 sudo chown -R apache:apache /var/www/html
 sudo chmod -R 755 /var/www/html
 
+🌍 Step 8: Access Website
 
-This is safer and correct for production environments.
+Open browser and visit:
 
-Step 8: Access Website in Browser
-
-Open browser and enter:
-
-http://52.66.253.200
+http://<PUBLIC-IP>
 
 
-(Replace with your EC2 Public IP.)
+Website should load successfully.
 
-If everything is correct, your website will load.
+✅ Result
 
-🔎 Troubleshooting
+Successfully deployed a static website on AWS EC2 using Apache Web Server.
 
-If site is not opening:
+That’s it. Clean. Professional. Interview-ready.
 
-Check Security Group → HTTP port 80 must allow 0.0.0.0/0
-
-Check Apache status:
-
-sudo systemctl status httpd
-
-
-Check if instance has a Public IP
-
-Make sure Internet Gateway is attached to the VPC (if using custom VPC)
-
-Result
-
-Successfully hosted a static website on an EC2 instance using Apache HTTP Server.
-
+If you want, I can now show you how to make this README look more advanced — like adding architecture explanation or adding screenshots section.
