@@ -55,10 +55,16 @@ Launch instance and copy Public IP
 ssh -i "mum-key.pem" ec2-user@<PUBLIC-IP>
 
 🌐 Step 3: Install Apache
+
+
 sudo yum update -y
+
 sudo yum install httpd -y
+
 sudo systemctl start httpd
+
 sudo systemctl enable httpd
+
 sudo systemctl status httpd
 
 📂 Step 4: Upload Website File
